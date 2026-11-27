@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#0a0a0c" />
+    <title>Dylan Andrada | Web Developer &amp; Marketing</title>
+    <meta name="description" content="Web developer and marketer from Buenos Aires. I build online stores, management systems and automations that help businesses sell more and stop doing things by hand." />
+    <meta name="author" content="Dylan Andrada" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+    <meta name="keywords" content="Dylan Andrada, web developer, marketing digital, desarrollador web, automatización de procesos, tiendas online, sistemas de gestión, Buenos Aires, Lanús" />
+
+    <!-- %SITE_URL% se completa solo al compilar (ver vite.config.js) -->
+    <link rel="canonical" href="%SITE_URL%/" />
+    <link rel="alternate" hreflang="en" href="%SITE_URL%/" />
+    <link rel="alternate" hreflang="es" href="%SITE_URL%/es/" />
+    <link rel="alternate" hreflang="x-default" href="%SITE_URL%/" />
+
+    <!-- Vista previa al compartir el link (WhatsApp, Instagram, LinkedIn, X) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Dylan Andrada" />
+    <meta property="og:url" content="%SITE_URL%/" />
+    <meta property="og:title" content="Dylan Andrada | Web Developer &amp; Marketing" />
+    <meta property="og:description" content="Your business can sell more. I’ll make it happen: websites, systems and automations, with a marketing brain." />
+    <meta property="og:image" content="%SITE_URL%/og.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Dylan Andrada's interactive portfolio: a room at night with neon lights" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="es_AR" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Dylan Andrada | Web Developer &amp; Marketing" />
+    <meta name="twitter:description" content="Your business can sell more. I’ll make it happen: websites, systems and automations, with a marketing brain." />
+    <meta name="twitter:image" content="%SITE_URL%/og.jpg" />
+    <script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "@id": "%SITE_URL%/#dylan",
+    "name": "Dylan Andrada",
+    "url": "%SITE_URL%/",
+    "image": "%SITE_URL%/brand/dylan.webp",
+    "jobTitle": "Web Developer & Marketing",
+    "email": "mailto:dylanandradadev@gmail.com",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Lanús",
+      "addressRegion": "Buenos Aires",
+      "addressCountry": "AR"
+    },
+    "knowsAbout": [
+      "Web development",
+      "Digital marketing",
+      "Process automation",
+      "E-commerce",
+      "Management systems",
+      "JavaScript",
+      "TypeScript",
+      "Next.js",
+      "Node.js",
+      "Supabase"
+    ],
+    "knowsLanguage": [
+      "es",
+      "en"
+    ],
+    "sameAs": [
+      "https://github.com/DylanAndrada13",
+      "https://instagram.com/dylan.developer"
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "name": "Dylan Andrada | Web Developer & Marketing",
+    "url": "%SITE_URL%/",
+    "image": "%SITE_URL%/og.jpg",
+    "founder": {
+      "@id": "%SITE_URL%/#dylan"
+    },
+    "email": "dylanandradadev@gmail.com",
+    "areaServed": [
+      "AR",
+      "Worldwide"
+    ],
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Lanús",
+      "addressRegion": "Buenos Aires",
+      "addressCountry": "AR"
+    },
+    "serviceType": [
+      "Web development",
+      "Online stores",
+      "Management systems",
+      "Process automation",
+      "Digital marketing"
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Dylan Andrada",
+    "url": "%SITE_URL%/",
+    "inLanguage": [
+      "en",
+      "es"
+    ]
+  }
+]
+    </script>
+    <link rel="icon" type="image/svg+xml" href="/brand/logo-d.svg" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/brand/icon-192.png" />
+    <link rel="apple-touch-icon" href="/brand/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="preload" as="image" href="/brand/dylan.webp" imagesrcset="/brand/dylan-820.webp 820w, /brand/dylan.webp 1230w" imagesizes="(max-width: 760px) 70vw, 46vw" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Tektur:wght@400;500;600&family=Yellowtail&family=JetBrains+Mono:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Escena WebGL (fondo animado) -->
+    <canvas id="scene" aria-hidden="true"></canvas>
+
+    <!-- Capas de atmósfera en CSS por encima del canvas -->
+    <div class="atmos" aria-hidden="true">
+      <div class="atmos__scanlines"></div>
+      <div class="atmos__vignette"></div>
+    </div>
+
+    <!-- Zonas interactivas de la habitación (marcadores en pantalla) -->
+    <div class="hotspots" id="hotspots"></div>
+
+    <!-- Cortina negra de la intro -->
+    <div class="curtain" aria-hidden="true"></div>
+
+    <header class="hero">
+      <p class="name" id="name" aria-label="Dylan, marketing &amp; web developer">
+        <span class="name__letters" aria-hidden="true"></span><span class="name__cursor" aria-hidden="true"></span>
+      </p>
+      <div class="hero__rule" aria-hidden="true"></div>
+      <p class="hero__tag"><span class="hero__role">marketing &amp; web developer</span></p>
+    </header>
+
+    <!-- Texto para Google (se genera al compilar desde src/data). Visualmente oculto. -->
+    <!--seo-content-->
+
+    <!-- Capas de interfaz que se montan desde JS -->
+    <div id="ui-root"></div>
+
+    <button class="skip" type="button" aria-label="Skip intro">skip intro ⏎</button>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

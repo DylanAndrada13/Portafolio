@@ -1,0 +1,419 @@
+/* =========================================================
+   Pantalla de entrada (antes de la habitación)
+   ========================================================= */
+.landing {
+  --red: #ff2a48;
+  --red-deep: #b0102a;
+  --line: rgba(255, 255, 255, 0.1);
+  --text: #f3f4f6;
+  --muted: #a3a7af;
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: grid;
+  grid-template-columns: minmax(0, 46fr) minmax(0, 54fr);
+  grid-template-rows: auto 1fr auto;
+  color: var(--text);
+  font-family: var(--font-body);
+  visibility: hidden;
+  overflow: hidden;
+}
+
+/* la habitación de fondo, desenfocada */
+#scene,
+body.no-webgl::before {
+  transition: filter 1.4s cubic-bezier(0.6, 0, 0.2, 1), transform 1.6s cubic-bezier(0.6, 0, 0.2, 1);
+}
+body.is-landing #scene,
+body.is-landing.no-webgl::before {
+  filter: blur(14px) brightness(0.9) saturate(1.1);
+  transform: scale(1.08);
+}
+body.is-landing .hero,
+body.is-landing .hotspots,
+body.is-landing .skip,
+body.is-landing .decals,
+body.is-landing .hud,
+body.is-landing .toasts,
+body.is-landing .swipe-hint {
+  opacity: 0 !important; /* algunas capas tienen opacidad inline (las anima JS) */
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+body.is-landing .atmos__scanlines {
+  opacity: 0.35;
+}
+
+.landing__shade {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(60% 80% at 22% 60%, rgba(255, 42, 72, 0.16), transparent 70%),
+    linear-gradient(90deg, rgba(5, 5, 7, 0.05) 0%, rgba(5, 5, 7, 0.4) 45%, rgba(5, 5, 7, 0.62) 100%),
+    linear-gradient(0deg, rgba(5, 5, 7, 0.8) 0%, transparent 28%);
+  pointer-events: none;
+}
+
+/* ---------- personaje ---------- */
+.landing__pj {
+  position: absolute;
+  left: max(0px, 4vw - 40px);
+  bottom: 0;
+  width: min(46vw, 92vh);
+  margin: 0;
+  pointer-events: none;
+}
+.landing__pj img {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.9)) drop-shadow(0 24px 40px rgba(0, 0, 0, 0.55)) drop-shadow(0 0 28px rgba(255, 42, 72, 0.22));
+}
+.landing__pj img {
+  /* se funde con el piso */
+  -webkit-mask-image: linear-gradient(0deg, transparent 0%, #000 18%);
+  mask-image: linear-gradient(0deg, transparent 0%, #000 18%);
+}
+.landing__halo {
+  position: absolute;
+  left: 50%;
+  top: 30%;
+  width: 78%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 42, 72, 0.32), rgba(255, 42, 72, 0.08) 45%, transparent 70%);
+  filter: blur(10px);
+}
+
+/* ---------- barra superior ---------- */
+.landing__bar {
+  grid-column: 1 / -1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: max(22px, env(safe-area-inset-top)) clamp(20px, 4vw, 56px) 0;
+}
+.landing__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font: 600 14px/1 var(--font-display);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+.landing__brand svg {
+  width: 26px;
+  height: 32px;
+  filter: drop-shadow(0 0 6px rgba(255, 42, 72, 0.6));
+}
+.landing__lang {
+  display: inline-flex;
+  padding: 3px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(10, 10, 12, 0.5);
+  cursor: pointer;
+}
+.landing__lang span {
+  padding: 6px 11px;
+  border-radius: 999px;
+  font: 500 11px/1 var(--font-mono);
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  transition: background 0.25s, color 0.25s;
+}
+.landing__lang span.is-on {
+  background: var(--text);
+  color: #0a0a0c;
+}
+.landing__lang:focus-visible {
+  outline: 2px solid var(--red);
+  outline-offset: 2px;
+}
+
+/* ---------- contenido ---------- */
+.landing__content {
+  grid-column: 2;
+  grid-row: 2;
+  position: relative;
+  align-self: center;
+  max-width: 600px;
+  padding: 24px clamp(20px, 4vw, 56px) 24px 0;
+}
+.landing__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin: 0 0 22px;
+  padding: 7px 13px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(10, 10, 12, 0.45);
+  font: 400 12px/1 var(--font-mono);
+  letter-spacing: 0.06em;
+  color: #d5d7dc;
+}
+.landing__status i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #34d399;
+  box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.6);
+  animation: landing-ping 2.2s ease-out infinite;
+}
+@keyframes landing-ping {
+  0% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.55); }
+  70%, 100% { box-shadow: 0 0 0 9px rgba(52, 211, 153, 0); }
+}
+.landing__title {
+  margin: 0;
+  display: grid;
+  gap: 8px;
+}
+.landing__hello {
+  font: 500 clamp(16px, 1.5vw, 20px)/1.2 var(--font-body);
+  color: var(--muted);
+}
+.landing__role {
+  font: 600 clamp(34px, 4vw, 58px)/1.06 var(--font-body);
+  letter-spacing: -0.035em;
+  color: var(--text);
+  text-wrap: balance;
+}
+.landing__lead {
+  margin: 20px 0 30px;
+  max-width: 50ch;
+  font: 400 clamp(15px, 1.15vw, 17px)/1.6 var(--font-body);
+  color: var(--muted);
+}
+
+/* botón principal: entrar a la habitación */
+.landing__enter {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  width: 100%;
+  max-width: 520px;
+  padding: 18px 22px 18px 18px;
+  border: 0;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #ff3655, #c8102e 70%);
+  color: #fff;
+  text-align: left;
+  cursor: pointer;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.12) inset,
+    0 18px 40px -12px rgba(255, 42, 72, 0.65),
+    0 0 60px -10px rgba(255, 42, 72, 0.55);
+  transition: translate 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.35s;
+  overflow: hidden;
+}
+.landing__enter::before {
+  /* brillo que cruza el botón */
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, transparent 35%, rgba(255, 255, 255, 0.28) 50%, transparent 65%);
+  transform: translateX(-100%);
+  animation: landing-sheen 4.5s ease-in-out 2s infinite;
+}
+@keyframes landing-sheen {
+  0%, 70% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+.landing__enter:hover,
+.landing__enter:focus-visible {
+  outline: none;
+  translate: 0 -3px;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.25) inset,
+    0 24px 50px -12px rgba(255, 42, 72, 0.8),
+    0 0 80px -6px rgba(255, 42, 72, 0.7);
+}
+.landing__enter:focus-visible {
+  box-shadow: 0 0 0 3px #0a0a0c, 0 0 0 5px #fff, 0 24px 50px -12px rgba(255, 42, 72, 0.8);
+}
+.landing__enter-icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 58px;
+  height: 58px;
+  border-radius: 12px;
+  background: #0b0b0d;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+.landing__enter-icon svg {
+  width: 30px;
+  height: 38px;
+}
+.landing__enter-text {
+  flex: 1;
+  display: grid;
+  gap: 6px;
+}
+.landing__enter-label {
+  font: 600 clamp(20px, 1.9vw, 26px)/1 var(--font-display);
+  letter-spacing: 0.02em;
+}
+.landing__enter-sub {
+  font: 400 12px/1.3 var(--font-mono);
+  color: rgba(255, 255, 255, 0.82);
+}
+.landing__enter-arrow {
+  flex: none;
+  font: 500 28px/1 var(--font-body);
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.landing__enter:hover .landing__enter-arrow {
+  transform: translateX(6px);
+}
+
+/* botones secundarios */
+.landing__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+  max-width: 560px;
+}
+.landing__links > * {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 11px 15px;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  background: rgba(12, 12, 14, 0.55);
+  backdrop-filter: blur(8px);
+  color: var(--text);
+  font: 500 14px/1 var(--font-body);
+  text-decoration: none;
+  cursor: pointer;
+  transition: border-color 0.25s, background 0.25s, translate 0.25s;
+}
+.landing__links > *:hover,
+.landing__links > *:focus-visible {
+  outline: none;
+  border-color: rgba(255, 42, 72, 0.7);
+  background: rgba(255, 42, 72, 0.1);
+  translate: 0 -2px;
+}
+.landing__links > [hidden] {
+  display: none;
+}
+.landing__links svg {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.85;
+}
+
+.landing__stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  margin: 28px 0 0;
+  padding: 0;
+  list-style: none;
+  font: 400 12px/1 var(--font-mono);
+  color: #7d828b;
+}
+.landing__stack li + li::before {
+  content: '/';
+  margin-right: 14px;
+  color: #4a4d54;
+}
+
+.landing__foot {
+  grid-column: 1 / -1;
+  grid-row: 3;
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin: 0;
+  padding: 0 clamp(20px, 4vw, 56px) max(20px, env(safe-area-inset-bottom));
+  font: 400 12px/1 var(--font-mono);
+  color: #7d828b;
+}
+.landing__foot a {
+  color: #c9ccd2;
+  text-decoration: none;
+}
+.landing__foot a:hover {
+  color: #fff;
+}
+
+/* ---------- celu / pantallas angostas ---------- */
+@media (max-width: 900px) {
+  .landing {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto 1fr auto;
+    overflow-y: auto;
+  }
+  .landing__shade {
+    position: fixed;
+    background:
+      radial-gradient(90% 50% at 30% 20%, rgba(255, 42, 72, 0.18), transparent 70%),
+      linear-gradient(0deg, rgba(5, 5, 7, 0.92) 0%, rgba(5, 5, 7, 0.6) 55%, rgba(5, 5, 7, 0.35) 100%);
+  }
+  .landing__pj {
+    position: relative;
+    grid-row: 2;
+    left: auto;
+    bottom: auto;
+    width: min(74vw, 340px);
+    margin: 8px 0 -40px 2vw;
+  }
+  .landing__pj img {
+    -webkit-mask-image: linear-gradient(0deg, transparent 0%, #000 32%);
+    mask-image: linear-gradient(0deg, transparent 0%, #000 32%);
+  }
+  .landing__content {
+    grid-column: 1;
+    grid-row: 3;
+    align-self: start;
+    max-width: none;
+    padding: 0 20px 20px;
+  }
+  .landing__enter {
+    max-width: none;
+  }
+  .landing__links {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .landing__links > * {
+    justify-content: center;
+  }
+  .landing__foot {
+    grid-row: 4;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .landing__enter::before,
+  .landing__status i { animation: none; }
+}
+
+.landing__role em {
+  font-style: normal;
+  color: var(--red);
+  text-shadow: 0 0 30px rgba(255, 42, 72, 0.45);
+}
+
+.landing__links span {
+  display: inline-block;
+}
+.landing__links span::first-letter {
+  text-transform: uppercase;
+}

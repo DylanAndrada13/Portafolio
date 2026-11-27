@@ -1,0 +1,3 @@
+Poné acá tu CV en PDF con el nombre Dylan-Andrada-CV.pdf
+(o cambiá el nombre en src/data/profile.js -> cv).
+Cuando el archivo existe, aparece el botón "download CV" en "about me".

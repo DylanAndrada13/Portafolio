@@ -1,0 +1,9 @@
+node_modules
+dist
+.playwright-mcp
+.claude
+_backup_*
+.vercel
+.env*
+.DS_Store
+Thumbs.db
